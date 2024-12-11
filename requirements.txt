@@ -1,0 +1,6 @@
+transformers~=4.47.0
+streamlit~=1.40.2
+pandas~=2.2.3
+elasticsearch~=8.16.0
+pyvi
+torch~=2.5.1
