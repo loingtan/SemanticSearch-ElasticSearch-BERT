@@ -1,5 +1,8 @@
+## Install requirement
 
-
+```
+pip install -r requirements.txt
+```
 ## Đánh index cho toàn bộ data
 
 ```
