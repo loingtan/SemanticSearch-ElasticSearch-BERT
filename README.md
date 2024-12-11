@@ -12,6 +12,7 @@ python index.py
 ```
 streamlit run main.py
 ```
-
+## Kiến trúc
+![BERT + ELasticSearch](./architecture.png)
 
 
