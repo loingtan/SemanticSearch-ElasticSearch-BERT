@@ -12,7 +12,10 @@
       "title": {
         "type": "text"
       },
-      "title_vector": {
+      "content": {
+        "type": "text"
+      },
+      "descriptions_vector": {
         "type": "dense_vector",
         "dims": 768
       }

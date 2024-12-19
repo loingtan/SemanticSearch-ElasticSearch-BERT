@@ -8,7 +8,7 @@ from transformers import AutoTokenizer, AutoModel
 
 @st.cache_resource
 def load_es():
-    model_embedding = AutoModel.from_pretrained("vinai/phobert-base-v2")
+    model_embedding = AutoModel.from_pretrained("google-bert/bert-base-uncased")
     client = Elasticsearch(hosts="http://localhost:9200")
     return model_embedding, client
 
@@ -32,28 +32,27 @@ def search(query, type_ranker, tokenizer=None, model=None):
                     "match_all": {}
                 },
                 "script": {
-                    "source": "cosineSimilarity(params.query_vector, 'title_vector') + 1.0",
+                    "source": "cosineSimilarity(params.query_vector, 'descriptions_vector') + 1.0",
                     "params": {"query_vector": query_vector}
                 }
             }
         }
-    else:  # BM25
+    else:
         script_query = {
-            "match": {
-                "title": {
-                    "query": query,
-                    "fuzziness": "AUTO"
-                }
-            }
+            "multi_match": {
+                "query": query,
+                        "fields": ["title^2", "content"],
+                            "fuzziness": "AUTO"
+    }
         }
 
     response = client.search(
-        index='demo_simcse',
+        index="nf_corpus",
         body={
             "size": 10,
             "query": script_query,
             "_source": {
-                "includes": ["id", "title"]
+                "includes": ["id", "title", "content"]
             },
         },
         ignore=[400]
@@ -73,7 +72,7 @@ def run():
         if input_text.strip():
             with st.spinner('Searching...'):
                 bm25_results = search(input_text, 'BM25')
-                tokenizer = AutoTokenizer.from_pretrained("vinai/phobert-base-v2")
+                tokenizer = AutoTokenizer.from_pretrained("google-bert/bert-base-uncased")
                 bert_results = search(input_text, 'BERT', tokenizer, model_embedding)
 
             col1, col2 = st.columns(2)
