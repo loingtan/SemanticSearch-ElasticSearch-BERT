@@ -4,3 +4,5 @@ pandas~=2.2.3
 elasticsearch~=8.16.0
 pyvi
 torch~=2.5.1
+beir~=2.0.0
+numpy~=2.2.0
